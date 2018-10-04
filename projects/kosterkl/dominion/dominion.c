@@ -655,9 +655,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
-  int cardDrawn;
-  int z = 0;// this is the counter for the temp hand
+//  int drawntreasure=0;
+//  int cardDrawn;
+//  int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
@@ -666,28 +666,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   //uses switch to select card and perform actions
   switch( card ) 
     {
-    case adventurer:
-      while(drawntreasure<2){
-	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
-	  shuffle(currentPlayer, state);
-	}
-	drawCard(currentPlayer, state);
-	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
-	  drawntreasure++;
-	else{
-	  temphand[z]=cardDrawn;
-	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-	  z++;
-	}
-      }
-      while(z-1>=0){
-	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
-	z=z-1;
-      }
+    case adventurer:              // ******************************************** THIS LINE NEEDS EDITED ************************************************
+      // play adventurer card
+      playAdventurer(currentPlayer, temphand, state);
       return 0;
 			
-    case council_room:
+    case council_room:      // ******************************************** THIS LINE NEEDS EDITED ************************************************   
       //+4 Cards
       for (i = 0; i < 4; i++)
 	{
@@ -711,7 +695,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       return 0;
 			
-    case feast:
+    case feast:     // ******************************************** THIS LINE NEEDS EDITED ************************************************
       //gain card with cost up to 5
       //Backup hand
       for (i = 0; i <= state->handCount[currentPlayer]; i++){
@@ -829,17 +813,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      // play the Smithy card
+      playSmithy(currentPlayer, handPos, state);
       return 0;
 		
-    case village:
+    case village:     // ******************************************** THIS LINE NEEDS EDITED ************************************************
       //+1 Card
       drawCard(currentPlayer, state);
 			
@@ -1325,6 +1303,80 @@ int updateCoins(int player, struct gameState *state, int bonus)
   //add bonus
   state->coins += bonus;
 
+  return 0;
+}
+
+// ******************************************** ADD FUNCTIONS HERE ************************************************
+
+/*********************************************************
+ * Name: playSmithy
+ * Description: plays the smithy card
+ * Operations: draws 3 cards, discard smithy from hand
+ * Input parameters: current player (int), hand position of smith (int),
+ *                   game state struct pointer
+ * Output: returns 0
+*********************************************************/
+int playSmithy(int currentPlayer, int handPos, struct gameState *state)
+{
+  //draw 3 cards
+  int i = 0;
+  for (i = 0; i < 3; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}
+			
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  
+  return 0;
+}
+
+
+/*********************************************************
+ * Name: playAdventurer
+ * Description: plays the adventurer card
+ * Operations: draw cards until revealing 2 treasure cards and adding them to the players hand,
+ *             then discard the non-treasure cards the player drew
+ * Input parameters: current player (int), temphand (int array),
+ *                   game state struct pointer
+ * Output: returns 0
+*********************************************************/
+int playAdventurer(int currentPlayer,  int temphand[], struct gameState *state)
+{
+  int drawntreasure = 0;
+  int cardDrawn = 0;
+  
+  // temp hand counter
+  int z = 0;
+  
+  // continue to draw new cards until 2 treasure cards have been drawn
+  while(drawntreasure<2)
+  {
+	  if (state->deckCount[currentPlayer] <1)
+	  { //if the deck is empty we need to shuffle discard and add to deck
+	    shuffle(currentPlayer, state);
+	  }
+	  
+	  drawCard(currentPlayer, state);
+	  
+	  cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+	  
+	  if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	    drawntreasure++;
+	  else
+	  {
+	    temphand[z]=cardDrawn;
+	    state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+	    z++;
+	  }
+  }
+      
+  while(z-1 >= 0)
+  {
+	  state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+	  z = z - 1;
+  }
+  
   return 0;
 }
 
