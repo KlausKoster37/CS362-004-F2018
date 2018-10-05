@@ -1243,7 +1243,7 @@ int playSmithy(int currentPlayer, int handPos, struct gameState *state)
 {
   //draw 3 cards
   int i = 0;
-  for (i = 0; i < 3; i++)
+  for (i = 0; i <= 3; i++)    // changed this to i <= 3 from i < 3.  This will cause smithy to draw 4 cards instead of 3.  BUG 1
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -1299,7 +1299,7 @@ int playAdventurer(int currentPlayer,  int temphand[], struct gameState *state)
 	  }
   }
       
-  while(z-1 >= 0)
+  while(z-1 > 1)    // introduced bug here with discarding cards  Original: z-1 >= 0, so with z-1 > 1, this never drops to 0 to discard all the cards  BUG 2
   {
 	  state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 	  z = z - 1;
@@ -1340,8 +1340,8 @@ int playCouncilRoom(int currentPlayer, int handPos, struct gameState *state)
 	}
 			
   //put played card in played card pile
-  discardCard(handPos, currentPlayer, state, 0);
-      
+  discardCard(handPos, currentPlayer, state, 1); // changed the trashed flag to 1. since card is "trashed" it doesn't get added to the played pile in the discardCard function BUG 3
+                                                 // one interesting note I want to mention here: there doesn't seem to be a remove card from play function. this trash flag doesn't seem to do a whole lot
   return 0;
 }
 
@@ -1389,7 +1389,7 @@ int playFeast(int currentPlayer, int choice1, int temphand[], struct gameState *
   updateCoins(currentPlayer, state, 5);
   
   int x = 1;
-  while( x == 1)
+  while( x < 1)     // changed from == to <.  Now, you can play feast and will never draw a card.  BUG 4
   {//Buy one card
     if (supplyCount(choice1, state) <= 0)
     {
