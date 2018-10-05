@@ -1389,7 +1389,7 @@ int playFeast(int currentPlayer, int choice1, int temphand[], struct gameState *
   updateCoins(currentPlayer, state, 5);
   
   int x = 1;
-  while( x < 1)     // changed from == to <.  Now, you can play feast and will never draw a card.  BUG 4
+  while( x < 1)     // changed from == to <.  Now, you can play feast and will never gain a card.  BUG 4
   {//Buy one card
     if (supplyCount(choice1, state) <= 0)
     {
