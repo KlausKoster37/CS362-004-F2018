@@ -32,11 +32,19 @@ Output:
 
 #define TESTCARD "Smity"
 
+struct compareGame
+{
+	int handCountBefore, handCountAfter = 0;
+	int deckCountBefore, deckCountAfter = 0;
+	int playedCardCountBefore, playedCardCountAfter = 0;
+}
+
 
 int main(int argc, char* argv[])
 {
 	// setup our variables/things necessary to start and play the game/card
     struct gameState state;
+    struct compareGame testGame;
     int k[10] = {adventurer, council_room, cutpurse, embargo, gardens, minion, mine, village, smithy, tribute};
     int numPlayers = 2;
     int handPosition = 0;
@@ -47,7 +55,17 @@ int main(int argc, char* argv[])
 	fflush(stdout);
 
 
+	// WHAT ARE WE GOING TO CHECK??
+	// played card gets ++
+	// played card gets added to played cards array.. look at this after getting most done.  Could be null w/ seg fault
+	// hand count before and after
+	// deck count before and after
 
+	// initialize the game
+	initializeGame(numPlayers, k, seed, &state);
+
+
+	
 
 
 
