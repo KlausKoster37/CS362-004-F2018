@@ -50,7 +50,7 @@ struct compareGame
     char* gameCardNames[treasure_map + 1];
 };
 
-void assertTest(int value, char* test, int before, int after);
+void asserttrue(int value, char* test, int before, int after);
 
 
 int main(int argc, char* argv[])
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void assertTest(int value, char* test, int before, int after)
+void asserttrue(int value, char* test, int before, int after)
 {
     if (value)
     {
