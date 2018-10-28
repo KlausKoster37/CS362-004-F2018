@@ -14,15 +14,14 @@ char inputChar()
 
 char *inputString()
 {
-    // TODO: rewrite this function
     char validChars[] = "rest";
-    char returnString[6];
-    memset(returnString, '\0', sizeof(char) * 6);
+    char *returnString = malloc(6 * sizeof(char));
+    memset(returnString, '\0', 6 * sizeof(char));
 
     int i;
     for (i = 0; i < 5; i++)
     {
-        strcpy(returnString[i], validChars[rand() % 4]);
+        returnString[i] = validChars[rand() % 4];
     }
 
     return returnString;
