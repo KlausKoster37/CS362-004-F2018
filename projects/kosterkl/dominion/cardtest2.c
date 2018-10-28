@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 
     // play smithy card
     after.playedSuccessfully = cardEffect(adventurer, choice1, choice2, choice3, &state, handPosition, &bonus);
-    assertTest(before.playedSuccessfully == after.playedSuccessfully, "Card played", before.playedSuccessfully, after.playedSuccessfully);
+    asserttrue(before.playedSuccessfully == after.playedSuccessfully, "Card played", before.playedSuccessfully, after.playedSuccessfully);
 
     // update test struct after playing
     after.handCount = numHandCards(&state);
@@ -133,19 +133,19 @@ int main(int argc, char* argv[])
     }
 
     // begin assertions and printing results
-    assertTest((after.handCount - before.handCount) == 2, "Hand Count", before.handCount, after.handCount);
+    asserttrue((after.handCount - before.handCount) == 2, "Hand Count", before.handCount, after.handCount);
     // removed deck count as this could be any number of cards removed from the deck
     // possible bug in played card count in adventurer as well - this never calls discard card, thus playedcards doesn't get incremented.  Leaving test in as a good test!
-    assertTest((after.playedCardCount - before.playedCardCount) == 1, "Played Card Count", before.playedCardCount, after.playedCardCount);
-    assertTest((before.numActions - after.numActions) == 0, "Number of Actions Count", before.numActions, after.numActions);
-    assertTest(before.numBuys == after.numBuys, "Number of Buys Count", before.numBuys, after.numBuys);
+    asserttrue((after.playedCardCount - before.playedCardCount) == 1, "Played Card Count", before.playedCardCount, after.playedCardCount);
+    asserttrue((before.numActions - after.numActions) == 0, "Number of Actions Count", before.numActions, after.numActions);
+    asserttrue(before.numBuys == after.numBuys, "Number of Buys Count", before.numBuys, after.numBuys);
 
     for (i = 0; i < treasure_map + 1; i++)
     {
         memset(gameCardString, '\0', 100 * sizeof(char));
         strcpy(gameCardString, "Game Card Count for: ");
         strcat(gameCardString, before.gameCardNames[i]);
-        assertTest(before.gameCards[i] == after.gameCards[i], gameCardString, before.gameCards[i], after.gameCards[i]);
+        asserttrue(before.gameCards[i] == after.gameCards[i], gameCardString, before.gameCards[i], after.gameCards[i]);
     }
 
     return 0;

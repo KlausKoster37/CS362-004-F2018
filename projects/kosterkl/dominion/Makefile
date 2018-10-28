@@ -56,6 +56,35 @@ unittest3: unittest3.c dominion.o rngs.o
 unittest4: unittest4.c dominion.o rngs.o
 	gcc -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
 
+# compiles all tests, runs each one redirecting the output to the unittestresults.out file
+# also runs gcov to get coverage results and redirects into the unittestresults.out file
+unittestresults: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4
+	./cardtest1 &> unittestresults.out
+	./cardtest2 >> unittestresults.out
+	./cardtest3 >> unittestresults.out
+	./cardtest4 >> unittestresults.out
+	./unittest1 >> unittestresults.out
+	./unittest2 >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	gcov -b unittest1.c >> unittestresults.out
+	cat unittest1.c.gcov >> unittestresults.out     
+	gcov -b unittest2.c >> unittestresults.out
+	cat unittest2.c.gcov >> unittestresults.out
+	gcov -b unittest3.c >> unittestresults.out
+	cat unittest3.c.gcov >> unittestresults.out
+	gcov -b unittest4.c >> unittestresults.out
+	cat unittest4.c.gcov >> unittestresults.out
+	gcov -b cardtest1.c >> unittestresults.out
+	cat cardtest1.c.gcov >> unittestresults.out
+	gcov -b cardtest2.c >> unittestresults.out
+	cat cardtest2.c.gcov >> unittestresults.out
+	gcov -b cardtest3.c >> unittestresults.out
+	cat cardtest3.c.gcov >> unittestresults.out
+	gcov -b cardtest4.c >> unittestresults.out
+	cat cardtest4.c.gcov >> unittestresults.out
+	gcov -b dominion.c >> unittestresults.out
+	cat dominion.c.gcov >> unittestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

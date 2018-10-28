@@ -1,0 +1,148 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*******************************************************************
+        -:    2:* Assignment 3: Unit Testing
+        -:    3:* File: unittest2.c
+        -:    4:* Function under test: getCost()
+        -:    5:*
+        -:    6:* Author: Klaus Koster (kosterkl)
+        -:    7:* Due Date: 10/28/2018
+        -:    8:* CS 362, Fall 2018
+        -:    9:*******************************************************************/
+        -:   10:
+        -:   11:// include files
+        -:   12:#include "dominion.h"
+        -:   13:#include "dominion_helpers.h"
+        -:   14:#include "interface.h"
+        -:   15:#include "rngs.h"
+        -:   16:#include <stdio.h>
+        -:   17:#include <stdlib.h>
+        -:   18:#include <string.h>
+        -:   19:
+        -:   20:/************************************************************
+        -:   21:                    getCost()
+        -:   22:
+        -:   23:Expected behavior: returns cost of card passed to it the function
+        -:   24:
+        -:   25:Input:
+        -:   26:    int cardNumber
+        -:   27:
+        -:   28:Output:
+        -:   29:    cost in integer form
+        -:   30:************************************************************/
+        -:   31:
+        -:   32:#define TESTFUNCTION "getCost()"
+        -:   33:
+        -:   34:// global easy testing arrays
+        -:   35:char* gameCardNames[treasure_map + 1];
+        -:   36:int cardCosts[treasure_map + 1];
+        -:   37:
+        -:   38:// modified assert from cardtests due to the before/after not being necessary.
+        -:   39:void asserttrue(int value, char* test);
+        -:   40:
+function main called 1 returned 100% blocks executed 100%
+        1:   41:int main(int argc, char* argv[])
+        -:   42:{
+        1:   43:    printf("----------------- Testing Function: %s ----------------\n", TESTFUNCTION);
+call    0 returned 100%
+        1:   44:    fflush(stdout);
+call    0 returned 100%
+call    1 returned 100%
+        -:   45:
+        -:   46:    // setup names
+        1:   47:    gameCardNames[0] = "curse";
+        1:   48:    gameCardNames[1] = "estate";
+        1:   49:    gameCardNames[2] = "duchy";
+        1:   50:    gameCardNames[3] = "province";
+        1:   51:    gameCardNames[4] = "copper";
+        1:   52:    gameCardNames[5] = "silver";
+        1:   53:    gameCardNames[6] = "gold";
+        1:   54:    gameCardNames[7] = "adventurer";
+        1:   55:    gameCardNames[8] = "council_room";
+        1:   56:    gameCardNames[9] = "feast";
+        1:   57:    gameCardNames[10] = "gardens";
+        1:   58:    gameCardNames[11] = "mine";
+        1:   59:    gameCardNames[12] = "remodel";
+        1:   60:    gameCardNames[13] = "smithy";
+        1:   61:    gameCardNames[14] = "village";
+        1:   62:    gameCardNames[15] = "baron";
+        1:   63:    gameCardNames[16] = "great_hall";
+        1:   64:    gameCardNames[17] = "minion";
+        1:   65:    gameCardNames[18] = "steward";
+        1:   66:    gameCardNames[19] = "tribute";
+        1:   67:    gameCardNames[20] = "ambassador";
+        1:   68:    gameCardNames[21] = "cutpurse";
+        1:   69:    gameCardNames[22] = "embargo";
+        1:   70:    gameCardNames[23] = "outpost";
+        1:   71:    gameCardNames[24] = "salvager";
+        1:   72:    gameCardNames[25] = "sea_hag";
+        1:   73:    gameCardNames[26] = "treasure_map";
+        -:   74:
+        -:   75:    // setup costs
+        1:   76:    cardCosts[0] = 0;
+        1:   77:    cardCosts[1] = 2;
+        1:   78:    cardCosts[2] = 5;
+        1:   79:    cardCosts[3] = 8;
+        1:   80:    cardCosts[4] = 0;
+        1:   81:    cardCosts[5] = 3;
+        1:   82:    cardCosts[6] = 6;
+        1:   83:    cardCosts[7] = 6;
+        1:   84:    cardCosts[8] = 5;
+        1:   85:    cardCosts[9] = 4;
+        1:   86:    cardCosts[10] = 4;
+        1:   87:    cardCosts[11] = 5;
+        1:   88:    cardCosts[12] = 4;
+        1:   89:    cardCosts[13] = 4;
+        1:   90:    cardCosts[14] = 3;
+        1:   91:    cardCosts[15] = 4;
+        1:   92:    cardCosts[16] = 3;
+        1:   93:    cardCosts[17] = 5;
+        1:   94:    cardCosts[18] = 3;
+        1:   95:    cardCosts[19] = 5;
+        1:   96:    cardCosts[20] = 3;
+        1:   97:    cardCosts[21] = 4;
+        1:   98:    cardCosts[22] = 2;
+        1:   99:    cardCosts[23] = 5;
+        1:  100:    cardCosts[24] = 4;
+        1:  101:    cardCosts[25] = 4;
+        1:  102:    cardCosts[26] = 4;
+        -:  103:
+        -:  104:    // test all costs
+        -:  105:    int i;
+       28:  106:    for (i = 0; i < treasure_map + 1; i++)
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:  107:    {
+        -:  108:        // note that we can use i instead of the card name because the order is the exact same as the enum
+       27:  109:        asserttrue(getCost(i) == cardCosts[i], gameCardNames[i]);
+call    0 returned 100%
+call    1 returned 100%
+        -:  110:    }
+        -:  111:
+        -:  112:}
+        -:  113:
+function asserttrue called 27 returned 100% blocks executed 63%
+       27:  114:void asserttrue(int value, char* test)
+        -:  115:{
+       27:  116:    if (value)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        -:  117:    {
+       27:  118:        printf("Test: %s successful!\n", test);
+call    0 returned 100%
+       27:  119:        fflush(stdout);
+call    0 returned 100%
+call    1 returned 100%
+        -:  120:    }
+        -:  121:    else
+        -:  122:    {
+    #####:  123:        printf("Test: %s failed!\n", test);
+call    0 never executed
+    #####:  124:        fflush(stdout);
+call    0 never executed
+call    1 never executed
+        -:  125:    }
+       27:  126:}

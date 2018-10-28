@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 
     // play smithy card
     after.playedSuccessfully = cardEffect(council_room, choice1, choice2, choice3, &state, handPosition, &bonus);
-    assertTest(before.playedSuccessfully == after.playedSuccessfully, "Card played", before.playedSuccessfully, after.playedSuccessfully);
+    asserttrue(before.playedSuccessfully == after.playedSuccessfully, "Card played", before.playedSuccessfully, after.playedSuccessfully);
 
     // update test struct after playing
     after.handCount = numHandCards(&state);
@@ -135,18 +135,18 @@ int main(int argc, char* argv[])
 
     // begin assertions and printing results
     // note that bug 3 is caught via the played card count since we altered the trash flag, the state played card count doesn't increase
-    assertTest((after.handCount - before.handCount) == 3, "Hand Count", before.handCount, after.handCount);
-    assertTest((before.deckCount - after.deckCount) == 4, "Deck Count", before.deckCount, after.deckCount);
-    assertTest((after.playedCardCount - before.playedCardCount) == 1, "Played Card Count", before.playedCardCount, after.playedCardCount);
-    assertTest((before.numActions - after.numActions) == 0, "Number of Actions Count", before.numActions, after.numActions);
-    assertTest((after.numBuys - before.numBuys) == 1, "Number of Buys Count", before.numBuys, after.numBuys);
+    asserttrue((after.handCount - before.handCount) == 3, "Hand Count", before.handCount, after.handCount);
+    asserttrue((before.deckCount - after.deckCount) == 4, "Deck Count", before.deckCount, after.deckCount);
+    asserttrue((after.playedCardCount - before.playedCardCount) == 1, "Played Card Count", before.playedCardCount, after.playedCardCount);
+    asserttrue((before.numActions - after.numActions) == 0, "Number of Actions Count", before.numActions, after.numActions);
+    asserttrue((after.numBuys - before.numBuys) == 1, "Number of Buys Count", before.numBuys, after.numBuys);
 
     for (i = 0; i < treasure_map + 1; i++)
     {
         memset(gameCardString, '\0', 100 * sizeof(char));
         strcpy(gameCardString, "Game Card Count for: ");
         strcat(gameCardString, before.gameCardNames[i]);
-        assertTest(before.gameCards[i] == after.gameCards[i], gameCardString, before.gameCards[i], after.gameCards[i]);
+        asserttrue(before.gameCards[i] == after.gameCards[i], gameCardString, before.gameCards[i], after.gameCards[i]);
     }
 
     return 0;
