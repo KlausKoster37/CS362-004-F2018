@@ -101,6 +101,7 @@ int main(int argc, char* argv[])
     cardCosts[25] = 4;
     cardCosts[26] = 4;
 
+    // test all costs
     int i;
     for (i = 0; i < treasure_map + 1; i++)
     {
