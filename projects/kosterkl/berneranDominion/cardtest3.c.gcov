@@ -1,0 +1,206 @@
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*******************************************************************
+        -:    2:* Assignment 3: Unit Testing
+        -:    3:* File: cardtest3.c
+        -:    4:* Card in Test: council room
+        -:    5:*
+        -:    6:* Author: Klaus Koster (kosterkl)
+        -:    7:* Due Date: 10/28/2018
+        -:    8:* CS 362, Fall 2018
+        -:    9:*******************************************************************/
+        -:   10:
+        -:   11:// include files
+        -:   12:#include "dominion.h"
+        -:   13:#include "dominion_helpers.h"
+        -:   14:#include "interface.h"
+        -:   15:#include "rngs.h"
+        -:   16:#include <stdio.h>
+        -:   17:#include <stdlib.h>
+        -:   18:#include <string.h>
+        -:   19:
+        -:   20:/************************************************************
+        -:   21:            COUNCIL ROOM
+        -:   22:
+        -:   23:Expected behavior: Draw 4 cards, +1 Buy, each other player draws a card
+        -:   24:    Note: +3 cards (+4, discard 1)
+        -:   25:
+        -:   26:Input:
+        -:   27:    int currentPlayer,
+        -:   28:    int handPos,
+        -:   29:    struct gameState *state
+        -:   30:
+        -:   31:Output:
+        -:   32:    int (return 0)
+        -:   33:************************************************************/
+        -:   34:
+        -:   35:#define TESTCARD "Council Room"
+        -:   36:
+        -:   37:
+        -:   38:struct compareGame
+        -:   39:{
+        -:   40:    int handCount;
+        -:   41:    int deckCount;
+        -:   42:    int playedCardCount;
+        -:   43:    int playedSuccessfully;
+        -:   44:    int numActions;
+        -:   45:    int numBuys;
+        -:   46:
+        -:   47:    // this represents ALL game cards (both victory and regular kingdom cards)
+        -:   48:    // So, iterating over the entire things is checking all the cards in the game for state changes
+        -:   49:    int gameCards[treasure_map + 1];
+        -:   50:    char* gameCardNames[treasure_map + 1];
+        -:   51:};
+        -:   52:
+        -:   53:void asserttrue(int value, char* test, int before, int after);
+        -:   54:
+        -:   55:
+function main called 1 returned 100% blocks executed 100%
+        1:   56:int main(int argc, char* argv[])
+        -:   57:{
+        -:   58:    // setup our variables/things necessary to start and play the game/card
+        -:   59:    struct gameState state;
+        -:   60:    struct compareGame before;
+        -:   61:    struct compareGame after;
+        1:   62:    before.gameCardNames[0] = "curse";
+        1:   63:    before.gameCardNames[1] = "estate";
+        1:   64:    before.gameCardNames[2] = "duchy";
+        1:   65:    before.gameCardNames[3] = "province";
+        1:   66:    before.gameCardNames[4] = "copper";
+        1:   67:    before.gameCardNames[5] = "silver";
+        1:   68:    before.gameCardNames[6] = "gold";
+        1:   69:    before.gameCardNames[7] = "adventurer";
+        1:   70:    before.gameCardNames[8] = "council_room";
+        1:   71:    before.gameCardNames[9] = "feast";
+        1:   72:    before.gameCardNames[10] = "gardens";
+        1:   73:    before.gameCardNames[11] = "mine";
+        1:   74:    before.gameCardNames[12] = "remodel";
+        1:   75:    before.gameCardNames[13] = "smithy";
+        1:   76:    before.gameCardNames[14] = "village";
+        1:   77:    before.gameCardNames[15] = "baron";
+        1:   78:    before.gameCardNames[16] = "great_hall";
+        1:   79:    before.gameCardNames[17] = "minion";
+        1:   80:    before.gameCardNames[18] = "steward";
+        1:   81:    before.gameCardNames[19] = "tribute";
+        1:   82:    before.gameCardNames[20] = "ambassador";
+        1:   83:    before.gameCardNames[21] = "cutpurse";
+        1:   84:    before.gameCardNames[22] = "embargo";
+        1:   85:    before.gameCardNames[23] = "outpost";
+        1:   86:    before.gameCardNames[24] = "salvager";
+        1:   87:    before.gameCardNames[25] = "sea_hag";
+        1:   88:    before.gameCardNames[26] = "treasure_map";
+        1:   89:    int k[10] = { adventurer, council_room, cutpurse, embargo, gardens, minion, mine, village, smithy, tribute };
+        1:   90:    int numPlayers = 2;
+        1:   91:    int handPosition = 0;
+        1:   92:    int seed = 1000;
+        -:   93:    // no choices or bonus for council room card
+        1:   94:    int choice1 = 0;
+        1:   95:    int choice2 = 0;
+        1:   96:    int choice3 = 0;
+        1:   97:    int bonus = 0;
+        -:   98:    char gameCardString[100];
+        -:   99:
+        1:  100:    printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
+call    0 returned 100%
+        1:  101:    fflush(stdout);
+call    0 returned 100%
+call    1 returned 100%
+        -:  102:
+        -:  103:    // initialize the game
+        1:  104:    initializeGame(numPlayers, k, seed, &state);
+call    0 returned 100%
+        -:  105:
+        -:  106:    // get initial state of the game before playing smithy
+        1:  107:    before.handCount = numHandCards(&state);
+call    0 returned 100%
+        1:  108:    before.deckCount = state.deckCount[0];		// player 0's (1st player) deck count
+        1:  109:    before.playedCardCount = state.playedCardCount;
+        1:  110:    before.numActions = state.numActions;
+        1:  111:    before.playedSuccessfully = 0;
+        1:  112:    before.numBuys = state.numBuys;
+        -:  113:
+        1:  114:    int i = 0;
+       28:  115:    for (i = 0; i < treasure_map + 1; i++)
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:  116:    {
+       27:  117:        before.gameCards[i] = state.supplyCount[i];
+        -:  118:    }
+        -:  119:
+        -:  120:    // play smithy card
+        1:  121:    after.playedSuccessfully = cardEffect(council_room, choice1, choice2, choice3, &state, handPosition, &bonus);
+call    0 returned 100%
+        1:  122:    asserttrue(before.playedSuccessfully == after.playedSuccessfully, "Card played", before.playedSuccessfully, after.playedSuccessfully);
+call    0 returned 100%
+        -:  123:
+        -:  124:    // update test struct after playing
+        1:  125:    after.handCount = numHandCards(&state);
+call    0 returned 100%
+        1:  126:    after.deckCount = state.deckCount[0];
+        1:  127:    after.playedCardCount = state.playedCardCount;
+        1:  128:    after.numActions = state.numActions;
+        1:  129:    after.numBuys = state.numBuys;
+        -:  130:
+       28:  131:    for (i = 0; i < treasure_map + 1; i++)
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:  132:    {
+       27:  133:        after.gameCards[i] = state.supplyCount[i];
+        -:  134:    }
+        -:  135:
+        -:  136:    // begin assertions and printing results
+        -:  137:    // note that bug 3 is caught via the played card count since we altered the trash flag, the state played card count doesn't increase
+        1:  138:    asserttrue((after.handCount - before.handCount) == 3, "Hand Count", before.handCount, after.handCount);
+call    0 returned 100%
+        1:  139:    asserttrue((before.deckCount - after.deckCount) == 4, "Deck Count", before.deckCount, after.deckCount);
+call    0 returned 100%
+        1:  140:    asserttrue((after.playedCardCount - before.playedCardCount) == 1, "Played Card Count", before.playedCardCount, after.playedCardCount);
+call    0 returned 100%
+        1:  141:    asserttrue((before.numActions - after.numActions) == 0, "Number of Actions Count", before.numActions, after.numActions);
+call    0 returned 100%
+        1:  142:    asserttrue((after.numBuys - before.numBuys) == 1, "Number of Buys Count", before.numBuys, after.numBuys);
+call    0 returned 100%
+        -:  143:
+       28:  144:    for (i = 0; i < treasure_map + 1; i++)
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:  145:    {
+       27:  146:        memset(gameCardString, '\0', 100 * sizeof(char));
+       27:  147:        strcpy(gameCardString, "Game Card Count for: ");
+       27:  148:        strcat(gameCardString, before.gameCardNames[i]);
+       27:  149:        asserttrue(before.gameCards[i] == after.gameCards[i], gameCardString, before.gameCards[i], after.gameCards[i]);
+call    0 returned 100%
+        -:  150:    }
+        -:  151:
+        1:  152:    return 0;
+        -:  153:}
+        -:  154:
+function asserttrue called 33 returned 100% blocks executed 60%
+       33:  155:void asserttrue(int value, char* test, int before, int after)
+        -:  156:{
+       33:  157:    if (value)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        -:  158:    {
+       33:  159:        printf("Test: %s successful!\n", test);
+call    0 returned 100%
+       33:  160:        printf("Before: %d\tAfter: %d\n", before, after);
+call    0 returned 100%
+       33:  161:        fflush(stdout);
+call    0 returned 100%
+call    1 returned 100%
+        -:  162:    }
+        -:  163:    else
+        -:  164:    {
+    #####:  165:        printf("Test: %s failed!\n", test);
+call    0 never executed
+    #####:  166:        printf("Before: %d\tAfter: %d\n", before, after);
+call    0 never executed
+    #####:  167:        fflush(stdout);
+call    0 never executed
+call    1 never executed
+        -:  168:    }
+       33:  169:}
